@@ -1,0 +1,123 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+}
+:root {
+  font-size: 62.5%;
+  --white: ##fcfefe;
+  --blue: #6fd2fb;
+  --gray: #dedede;
+  --ligth-gray: #edefef;
+  --black: #000;
+}
+
+header,
+.button-container,
+button,
+.favorites-container thead tr,
+.favorites-container tbody tr .name {
+  display: flex;
+  align-items: center;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--white);
+  font-family: "Roboto", sans-serif;
+}
+#app {
+  width: 100%;
+  max-width: 55rem;
+  margin: 0 auto;
+  margin-top: 4rem;
+}
+header {
+  justify-content: space-between;
+}
+header h1 {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+header .button-container {
+  width: 25rem;
+}
+header .button-container input {
+  border: 1px solid #0000004b;
+  padding: 0.8rem;
+  flex: 1;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+header .button-container button {
+  background-color: var(--blue);
+  padding: 0.8rem 1rem;
+  font-size: 1.6rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  height: 3.3rem;
+}
+
+.favorites-container {
+  width: 100%;
+  margin-top: 4rem;
+  border-collapse: collapse;
+}
+.favorites-container thead tr {
+  background-color: var(--blue);
+  padding: 1rem 1.4rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 1.7rem;
+  justify-content: space-between;
+}
+.favorites-container thead tr:nth-child(1) {
+  flex: 1;
+}
+.favorites-container tbody {
+  border-radius: 0 0 0.8rem 0.8rem;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.315);
+}
+.favorites-container tbody tr:last-child {
+  border-radius: 0 0 0.8rem 0.8rem;
+}
+
+.favorites-container tbody tr {
+  display: grid;
+  background-color: var(--gray);
+  grid-template-columns: 6rem 1fr 130px 100px 80px;
+  padding: 1rem;
+  align-items: center;
+  font-size: 1.6rem;
+}
+.favorites-container tbody tr td:nth-child(2) {
+  justify-self: flex-start;
+}
+.favorites-container tbody tr td:nth-child(3) {
+  justify-self: flex-start;
+}
+.favorites-container tbody tr td:nth-child(4) {
+  justify-self: center;
+}
+.favorites-container tbody tr td:nth-child(5) {
+  justify-self: center;
+}
+
+.favorites-container tbody tr:nth-child(even) {
+  background-color: var(--ligth-gray);
+}
+.favorites-container tbody tr td {
+  padding: 1rem;
+}
+.favorites-container tbody tr td img {
+  width: 50px;
+  border-radius: 50%;
+}
+.favorites-container tbody tr .name {
+  flex-direction: column;
+}
+.favorites-container tbody tr td:last-child {
+  color: red;
+  cursor: pointer;
+}
