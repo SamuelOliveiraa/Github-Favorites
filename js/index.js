@@ -75,4 +75,4 @@ function removeElementOfTable(e) {
   e.target.parentNode.remove();
   ifTbodyIsEmpty();
 }
-    
+     
