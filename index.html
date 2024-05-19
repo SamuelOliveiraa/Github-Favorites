@@ -16,12 +16,13 @@
   </head>
   <body>
     <div id="app">
+      <div class="error-message hide"></div>
       <header>
         <h1>Github Favorites</h1>
-        <form action="#" class="button-container">
-          <label for="users"></label>
-          <input type="text" placeholder="Usuario do Github" />
-          <button>+</button>
+        <form action="/" class="button-container">
+          <label for="userName"></label>
+          <input type="text" name="userName" id="userName" placeholder="Usuario do Github" />
+          <button id="button">+</button>
         </form>
       </header>
       <table class="favorites-container">
@@ -34,43 +35,7 @@
             <th></th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td><img src="https://avatars.githubusercontent.com/u/86499135?v=4" alt="Avatar url"></td>
-            <td class="name">Maik Brito <span class="login">maikBrito</span></td>
-            <td>17</td>
-            <td>1900</td>
-            <td>x</td>
-          </tr>
-          <tr>
-            <td><img src="https://avatars.githubusercontent.com/u/86499135?v=4" alt="Avatar url"></td>
-            <td class="name">Maik Brito <span class="login">maikBrito</td>
-            <td>14</td>
-            <td>1532</td>
-            <td>x</td>
-          </tr>
-          <tr>
-            <td><img src="https://avatars.githubusercontent.com/u/86499135?v=4" alt="Avatar url"></td>
-            <td class="name">Maik Brito <span class="login">maikBrito</td>
-            <td>14</td>
-            <td>1532</td>
-            <td>x</td>
-          </tr>
-          <tr>
-            <td><img src="https://avatars.githubusercontent.com/u/86499135?v=4" alt="Avatar url"></td>
-            <td class="name">Maik Brito <span class="login">maikBrito</td>
-            <td>14</td>
-            <td>1532</td>
-            <td>x</td>
-          </tr>
-          <tr>
-            <td><img src="https://avatars.githubusercontent.com/u/86499135?v=4" alt="Avatar url"></td>
-            <td class="name">Maik Brito <span class="login">maikBrito</td>
-            <td>14</td>
-            <td>1532</td>
-            <td>x</td>
-          </tr>
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
   </body>
