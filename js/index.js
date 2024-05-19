@@ -1,13 +1,16 @@
 const userNameInput = document.querySelector("#userName");
 const buttonContainer = document.querySelector("button");
 const tbody = document.querySelector("tbody");
-const removeItem = document.querySelector(".remove");
 
 /* IF TBODY DONT HAS ELEMENTS ADD H1*/
-if (tbody.children.length === 0) {
-  const element = `<h1>Sem nenhum usuario favoritado. Pesquise um usuario para adicionar na lista</h1>`;
+ifTbodyIsEmpty();
 
-  tbody.innerHTML = element;
+function ifTbodyIsEmpty() {
+  if (tbody.children.length === 0) {
+    const element = `<h1>Sem nenhum usuario favoritado. Pesquise um usuario para adicionar na lista</h1>`;
+
+    tbody.innerHTML = element;
+  }
 }
 
 buttonContainer.addEventListener("click", e => {
@@ -19,15 +22,13 @@ buttonContainer.addEventListener("click", e => {
   selectedFavoriteUser(userNameInputValue);
 });
 
-console.log(removeItem)
-
 function showErrorMessage(message) {
   const errorMessage = document.querySelector(".error-message");
-  errorMessage.classList.toggle("hide");
+  errorMessage.classList.remove("hide");
   errorMessage.textContent = message;
 
   setTimeout(() => {
-    errorMessage.classList.toggle("hide");
+    errorMessage.classList.add("hide");
   }, 3000);
 }
 
@@ -40,6 +41,7 @@ async function selectedFavoriteUser(userName) {
 
   if (userData.message) {
     showErrorMessage("Usuario não encotrado, tente novamente");
+    return;
   }
 
   createUserFavorite(userData);
@@ -48,7 +50,7 @@ async function selectedFavoriteUser(userName) {
 function createUserFavorite(user) {
   /* IF TBODY HAS ELEMENTS REMOVE H1*/
   if (tbody.children[0].localName === "h1") {
-    tbody.children[0].classList.add("hide");
+    tbody.children[0].remove();
   }
 
   const html = `
@@ -57,13 +59,19 @@ function createUserFavorite(user) {
         <td class="name">${user.name} <span class="login">${user.login}</td>
         <td>${user.public_repos}</td>
         <td>${user.followers}</td>
-        <td data-id=${user.id} class="remove"> x </td>
+        <td data-id=${user.id} class="remove-button"> x </td>
       </tr>
   `;
-
   tbody.innerHTML += html;
+
+  const removeButtons = document.querySelectorAll(".remove-button");
+  console.log(removeButtons);
+  removeButtons.forEach(button => {
+    button.addEventListener("click", e => removeElementOfTable(e));
+  });
 }
 
 function removeElementOfTable(e) {
-  console.log(e.target);
+  e.target.parentNode.remove();
+  ifTbodyIsEmpty();
 }
