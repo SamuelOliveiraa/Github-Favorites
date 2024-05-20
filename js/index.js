@@ -31,13 +31,14 @@ function updateDataInScreen() {
         <td class="name">${user.name} <span class="login">${user.login}</td>
         <td>${user.public_repos}</td>
         <td>${user.followers}</td>
-        <td data-id=${user.id} class="remove-button"> x </td>
+      <td data-id=${user.id} class="remove-button"> x </td>
       </tr>
   `;
   }
-  tbody.innerHTML = html;
-}
 
+  tbody.innerHTML = html;
+  addEventOfRemoveInAllX();
+}
 // SE O LOCAL STORAGE ESTA VAZIO, MOSTRA O H1 NA TELA
 function ifLocalStorageIsEmpty() {
   if (allFavoritesUsers.length === 0) {
@@ -50,10 +51,16 @@ function ifLocalStorageIsEmpty() {
 // REMOVE ITEM DO LOCAL STORAGE
 function removeElementOfFavoriteUsers(id) {
   allFavoritesUsers = allFavoritesUsers.filter(user => Number(id) !== user.id);
-  console.log(allFavoritesUsers);
   updateLocalStorage();
   updateDataInScreen();
   ifLocalStorageIsEmpty();
+}
+
+//ADICIONA O EVENTO DE CLICK EM TODOS OS X
+function addEventOfRemoveInAllX() {
+  document.querySelectorAll(".remove-button").forEach(button => {
+    button.addEventListener("click", e => removeElementOfFavoriteUsers(e.target.dataset.id));
+  });
 }
 
 // MOSTRA MENSAGEM DE ERRO NA TELA CONFORME O TEXTO PASSADO
@@ -105,9 +112,6 @@ function createUser(user) {
   if (verifyIfElementExists(user)) {
     insertElementsInFavoriteUsers(user);
   }
-
-  //ADICIONA O EVENTO DE CLICK NO BUTTON DE REMOVER ELEMENTO
-  addEventClickToButtons();
 }
 
 // ADICIONA O ELEMENTO NO ARRAY FAVORITE USER E ATUALIZA O LOCAL STORAGE E OS DADOS NA TELA
@@ -122,16 +126,10 @@ function insertElementsInFavoriteUsers({ id, avatar_url, name, login, followers,
   };
 
   allFavoritesUsers.push(newUser);
+  //ADICIONA O EVENTO DE CLICK NO BUTTON DE REMOVER ELEMENTO
+  //addEventClickToButtons();
   updateDataInScreen();
   updateLocalStorage();
-}
-
-//ADICIONA O EVENTO DE CLICK NO BUTTON DE REMOVER ELEMENTO
-function addEventClickToButtons() {
-  const removeButtons = document.querySelectorAll(".remove-button");
-  removeButtons.forEach(button => {
-    button.addEventListener("click", e => removeElementOfFavoriteUsers(e.target.dataset.id));
-  });
 }
 
 // TODOS OS EVENTOS
