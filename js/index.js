@@ -47,12 +47,37 @@ async function selectedFavoriteUser(userName) {
   createUserFavorite(userData);
 }
 
+function verifyIfHasElementsDuplicated(user) {
+  const allElementsTr = document.querySelectorAll("tbody tr");
+  for (const trElement of allElementsTr) {
+    if (user.id === Number(trElement.id)) {
+      showErrorMessage("Usuario já cadastrado, não pode registrar o mesmo usuario");
+      return false;
+    }
+  }
+  return true;
+}
+
 function createUserFavorite(user) {
   /* IF TBODY HAS ELEMENTS REMOVE H1*/
   if (tbody.children[0].localName === "h1") {
     tbody.children[0].remove();
   }
+  
+  const hasELementsDuplicated = verifyIfHasElementsDuplicated(user);
 
+  if (hasELementsDuplicated) {
+    insertElementsInTbody(user);
+  }
+
+  //ADD CLICK REMOVE EVENT IN X DELETE BUTTON
+  const removeButtons = document.querySelectorAll(".remove-button");
+  removeButtons.forEach(button => {
+    button.addEventListener("click", e => removeElementOfTable(e));
+  });
+}
+
+function insertElementsInTbody(user) {
   const html = `
       <tr id="${user.id}" >
         <td><img src="${user.avatar_url}" alt="Avatar url"></td>
@@ -63,16 +88,9 @@ function createUserFavorite(user) {
       </tr>
   `;
   tbody.innerHTML += html;
-
-  const removeButtons = document.querySelectorAll(".remove-button");
-  console.log(removeButtons);
-  removeButtons.forEach(button => {
-    button.addEventListener("click", e => removeElementOfTable(e));
-  });
 }
 
 function removeElementOfTable(e) {
   e.target.parentNode.remove();
   ifTbodyIsEmpty();
 }
-              
