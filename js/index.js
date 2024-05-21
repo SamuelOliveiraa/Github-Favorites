@@ -1,32 +1,25 @@
+import { Api } from "./Apiget.js";
+import { Storage } from "./LocalStorage.js";
 
 const userNameInput = document.querySelector("#userName");
 const buttonContainer = document.querySelector("button");
 const tbody = document.querySelector("tbody");
-let allFavoritesUsers;
 
+const myLocalStorage = new Storage();
+const api = new Api();
 
-// CRIA LOCAL STORAGE
-function createLocalStorage() {
-  if (localStorage.getItem("github-favorites") === null) {
-    localStorage.setItem("github-favorites", JSON.stringify([]));
-    allFavoritesUsers = JSON.parse(localStorage.getItem("github-favorites"));
-  } else {
-    allFavoritesUsers = JSON.parse(localStorage.getItem("github-favorites"));
+class First {
+  constructor(allFavoritesUsers, myLocalStorage) {
+    this.allFavoritesUsers = allFavoritesUsers;
+    this.myLocalStorage = myLocalStorage;
   }
-  updateLocalStorage();
-  updateDataInScreen();
-  ifLocalStorageIsEmpty();
-}
-
-// ATUALIZAR LOCAL STORAGE
-function updateLocalStorage() {
-  localStorage.setItem("github-favorites", JSON.stringify(allFavoritesUsers));
 }
 
 // ATUALIZAR DADOS NA TELA
 function updateDataInScreen() {
+  myLocalStorage.create();
   let html = "";
-  for (const user of allFavoritesUsers) {
+  for (const user of myLocalStorage.allFavoritesUsers.get()) {
     html += `
       <tr id="${user.id}" >
         <td><img src="${user.avatar_url}" alt="Avatar url"></td>
@@ -40,22 +33,6 @@ function updateDataInScreen() {
 
   tbody.innerHTML = html;
   addEventOfRemoveInAllX();
-}
-// SE O LOCAL STORAGE ESTA VAZIO, MOSTRA O H1 NA TELA
-function ifLocalStorageIsEmpty() {
-  if (allFavoritesUsers.length === 0) {
-    const element = `<h1>Sem nenhum usuario favoritado. Pesquise um usuario para adicionar na lista</h1>`;
-
-    tbody.innerHTML = element;
-  }
-}
-
-// REMOVE ITEM DO LOCAL STORAGE
-function removeElementOfFavoriteUsers(id) {
-  allFavoritesUsers = allFavoritesUsers.filter(user => Number(id) !== user.id);
-  updateLocalStorage();
-  updateDataInScreen();
-  ifLocalStorageIsEmpty();
 }
 
 //ADICIONA O EVENTO DE CLICK EM TODOS OS X
@@ -77,15 +54,11 @@ function showErrorMessage(message) {
 }
 
 // PEGA O USUARIO DA API CONFORME USERNAME PASSADO PARA ELE
-async function getUserFromApi(userName) {
-  const endpoint = `https://api.github.com/users/${userName}`;
-
-  const userData = await fetch(endpoint)
-    .then(data => data.json())
-    .then(data => data);
+function getUserFromApi(userName) {
+  const userData = api.getUser(userName);
 
   if (userData.message) {
-    showErrorMessage("Usuario não encotrado, tente novamente");
+    showErrorMessage("Usuario não encontrado, tente novamente");
     return;
   }
 
@@ -94,7 +67,7 @@ async function getUserFromApi(userName) {
 
 // VERIFICA SE O USUARIO JÁ EXISTE E RETORNA TRUE OU FALSE
 function verifyIfElementExists(user) {
-  for (const allUser of allFavoritesUsers) {
+  for (const allUser of allFavoritesUsers.get()) {
     if (user.id === Number(allUser.id)) {
       showErrorMessage("Usuario já cadastrado, não pode registrar o mesmo usuario");
       return false;
@@ -112,26 +85,8 @@ function createUser(user) {
 
   // VERIFICA SE O ELEMENTO JA EXISTE NO FAVORITEUSERS
   if (verifyIfElementExists(user)) {
-    insertElementsInFavoriteUsers(user);
+    allFavoritesUsers.insertElement(user);
   }
-}
-
-// ADICIONA O ELEMENTO NO ARRAY FAVORITE USER E ATUALIZA O LOCAL STORAGE E OS DADOS NA TELA
-function insertElementsInFavoriteUsers({ id, avatar_url, name, login, followers, public_repos }) {
-  const newUser = {
-    id,
-    name,
-    avatar_url,
-    login,
-    public_repos,
-    followers
-  };
-
-  allFavoritesUsers.push(newUser);
-  //ADICIONA O EVENTO DE CLICK NO BUTTON DE REMOVER ELEMENTO
-  //addEventClickToButtons();
-  updateDataInScreen();
-  updateLocalStorage();
 }
 
 // TODOS OS EVENTOS
@@ -147,6 +102,6 @@ buttonContainer.addEventListener("click", e => {
 });
 
 // INSTANCIA O LOCAL STORAGE
-createLocalStorage();
+myLocalStorage.create();
 
-export {allFavoritesUsers}
+export { tbody, updateDataInScreen, showErrorMessage, addEventOfRemoveInAllX, First };

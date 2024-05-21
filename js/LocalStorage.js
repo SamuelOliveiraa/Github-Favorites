@@ -1,30 +1,38 @@
+import { FavoriteUsers } from "./FavoriteUsers.js";
+import { First, tbody, updateDataInScreen } from "./index.js";
 
-
-// CRIA O LOCAL STORAGE
-function createLocalStorage() {
-  if (localStorage.getItem("github-favorites") === null) {
-    localStorage.setItem("github-favorites", JSON.stringify([]));
-    allFavoritesUsers = JSON.parse(localStorage.getItem("github-favorites"));
-  } else {
-    allFavoritesUsers = JSON.parse(localStorage.getItem("github-favorites"));
+export class Storage extends First {
+  constructor(allFavoritesUsers) {
+    super(allFavoritesUsers);
   }
-  updateLocalStorage();
-  updateDataInScreen();
-  ifLocalStorageIsEmpty();
-}
 
-// ATUALIZAR LOCAL STORAGE
-function updateLocalStorage() {
-  localStorage.setItem("github-favorites", JSON.stringify(allFavoritesUsers));
-}
+  get() {
+    return JSON.parse(localStorage.getItem("github-favorites"));
+  }
 
-function ifLocalStorageIsEmpty() {
-  if (allFavoritesUsers.length === 0) {
-    const element = `<h1>Sem nenhum usuario favoritado. Pesquise um usuario para adicionar na lista</h1>`;
+  create() {
+    if (localStorage.getItem("github-favorites") === null) {
+      localStorage.setItem("github-favorites", JSON.stringify([]));
+      this.allFavoritesUsers.update(JSON.parse(localStorage.getItem("github-favorites")));
+    } else {
+      this.allFavoritesUsers.update(JSON.parse(localStorage.getItem("github-favorites")));
+    }
+    this.update();
+    updateDataInScreen();
+    this.ifIsEmpty();
+  }
 
-    tbody.innerHTML = element;
+  update() {
+    localStorage.setItem("github-favorites", JSON.stringify(this.allFavoritesUsers.get()));
+  }
+
+  ifIsEmpty() {
+    if (this.allFavoritesUsers.length === 0) {
+      const element = `<h1>Sem nenhum usuario favoritado. Pesquise um usuario para adicionar na lista</h1>`;
+
+      tbody.innerHTML = element;
+    }
   }
 }
 
-
-export {createLocalStorage, updateLocalStorage}
+export {};
