@@ -1,7 +1,9 @@
+
 const userNameInput = document.querySelector("#userName");
 const buttonContainer = document.querySelector("button");
 const tbody = document.querySelector("tbody");
 let allFavoritesUsers;
+
 
 // CRIA LOCAL STORAGE
 function createLocalStorage() {
@@ -146,3 +148,5 @@ buttonContainer.addEventListener("click", e => {
 
 // INSTANCIA O LOCAL STORAGE
 createLocalStorage();
+
+export {allFavoritesUsers}
