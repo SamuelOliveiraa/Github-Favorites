@@ -6,7 +6,6 @@ export class Favorites {
     this.buttonContainer = document.querySelector("button");
     this.tbody = document.querySelector("tbody");
     this.allFavoritesUsers = [];
-    this.tbody.classList.add('isLoading')  
     this.createLocalStorage();
     this.addEventToButton();
   }
@@ -18,10 +17,8 @@ export class Favorites {
       this.allFavoritesUsers = JSON.parse(localStorage.getItem("github-favorites"));
     } else {
       this.allFavoritesUsers = JSON.parse(localStorage.getItem("github-favorites"));
-    } 
-    setTimeout(() => {
-      this.tbody.classList.remove('isLoading') 
-    }, 500);
+    }
+
     this.updateLocalStorage();
     this.updateDataInScreen();
     this.ifLocalStorageIsEmpty();
@@ -30,11 +27,11 @@ export class Favorites {
   // ATUALIZAR LOCAL STORAGE
   updateLocalStorage() {
     localStorage.setItem("github-favorites", JSON.stringify(this.allFavoritesUsers));
-  } 
+  }
 
   // ATUALIZAR DADOS NA TELA
   updateDataInScreen() {
-    let html = ""; 
+    let html = "";
 
     for (const user of this.allFavoritesUsers) {
       html += `
@@ -54,18 +51,16 @@ export class Favorites {
               <td data-id=${user.id} class="remove-button"> x </td>
             </tr>
         `;
-    } 
-
-    
+    }
     this.tbody.innerHTML = html;
-    
+
     this.addEventOfRemoveInAllX();
   }
 
   // SE O LOCAL STORAGE ESTA VAZIO, MOSTRA O H1 NA TELA
   ifLocalStorageIsEmpty() {
     if (this.allFavoritesUsers.length === 0) {
-      const element = `<h1>Sem nenhum usuario favoritado. Pesquise um usuario para adicionar na lista</h1>`;
+      const element = `<h1>Nenhum usuario favoritado. Pesquise um usuario para adicionar na lista.</h1>`;
 
       this.tbody.innerHTML = element;
     }
@@ -104,7 +99,7 @@ export class Favorites {
     if (user.message) {
       this.showErrorMessage("Usuario não encotrado, tente novamente");
       return;
-    } 
+    }
 
     this.createUser(user);
   }
